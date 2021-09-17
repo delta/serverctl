@@ -1,0 +1,20 @@
+FROM python:3.9-alpine
+
+ENV PYTHONUNBUFFERED 1
+
+RUN apk update --no-cache && apk add --no-cache postgresql-client
+
+RUN addgroup -S serverctl && adduser -S serverctl -G serverctl
+WORKDIR /home/serverctl/serverctl
+
+COPY requirements.txt .
+
+RUN apk add build-base postgresql-dev libpq --no-cache --virtual .build-deps \
+    && pip install --no-cache-dir -r requirements.txt \
+    && apk del .build-deps
+
+USER serverctl
+
+COPY --chown=serverctl:serverctl . .
+
+ENTRYPOINT [ "/home/serverctl/serverctl/scripts/docker/entrypoint-prod.sh" ]

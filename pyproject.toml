@@ -1,0 +1,42 @@
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-v"
+testpaths = [
+    "tests"
+]
+norecursedirs = [
+    "pgdata_dev",
+    "pgdata_pgadmin",
+    "venv"
+]
+
+[tool.coverage.run]
+omit = [
+    "pgdata_dev",
+    "pgdata_pgadmin",
+    "venv/*",
+    "tests/*"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "if __name__ == .__main__.:",
+]
+
+[tool.mypy]
+strict = true
+pretty = true
+html_report = "htmlmypy"
+exclude = "venv"
+
+[[tool.mypy.overrides]]
+module = [
+    "uvicorn",
+    "sqlalchemy.*",
+    "alembic"
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "alembic.*"
+no_implicit_reexport = false

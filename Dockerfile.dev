@@ -1,0 +1,22 @@
+FROM python:3.9-slim
+
+ENV PYTHONUNBUFFERED 1
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    nano \
+    vim \
+    curl \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -r serverctl && useradd --no-log-init -r -g serverctl serverctl
+WORKDIR /home/serverctl/serverctl
+
+COPY --chown=serverctl:serverctl requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+USER serverctl
+
+ENTRYPOINT [ "/home/serverctl/serverctl/scripts/docker/entrypoint-dev.sh" ]
