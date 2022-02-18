@@ -11,7 +11,7 @@ pylint==2.11.1
 pytest==6.2.5
 pre-commit==2.15.0
 coverage[toml]==6.0.1
-lxml==4.6.3
+lxml==4.8.0
 mypy==0.910
 
 # Workaround https://github.com/tiangolo/fastapi/issues/2595
